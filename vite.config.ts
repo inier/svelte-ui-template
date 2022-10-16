@@ -1,21 +1,19 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-import Unocss from 'unocss/vite'
-import path from 'path';
-import { extractorSvelte } from '@unocss/core'
-import unoCfg from './uno';
+import { defineConfig } from "vite";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import Unocss from "unocss/vite";
+import path from "path";
+import { extractorSvelte } from "@unocss/core";
+import unoCfg from "./uno";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const common = {
     resolve: {
-      alias: [
-        { find: '@', replacement: path.resolve(__dirname, '/src') },
-      ],
+      alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
     },
   };
 
-  if (command === 'serve') {
+  if (command === "serve") {
     return {
       plugins: [
         Unocss({
@@ -25,16 +23,16 @@ export default defineConfig(({ command, mode }) => {
         svelte({}),
       ],
       ...common,
-    }
+    };
   }
 
-  if (command === 'build') {
+  if (command === "build") {
     return {
       ...common,
       plugins: [
         Unocss({
           extractors: [extractorSvelte],
-          mode: 'svelte-scoped',
+          mode: "svelte-scoped",
           ...unoCfg,
         }),
         svelte({}),
@@ -42,9 +40,9 @@ export default defineConfig(({ command, mode }) => {
       build: {
         cssCodeSplit: true,
         lib: {
-          entry: path.resolve(__dirname, 'src/components/index.ts'),
-          name: 'MyLib',
-          fileName: (format) => `index.${format}.js`
+          entry: path.resolve(__dirname, "src/components/index.ts"),
+          name: "MyLib",
+          fileName: (format) => `index.${format}.js`,
         },
         rollupOptions: {
           // 确保外部化处理那些你不想打包进库的依赖
@@ -54,10 +52,9 @@ export default defineConfig(({ command, mode }) => {
             // globals: {
             //   unocss: 'unocss'
             // }
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    };
   }
-
-})
+});
